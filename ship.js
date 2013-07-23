@@ -1,7 +1,5 @@
 function Ship(pos, game){
-  MovingObject.call(this, pos, [0, 0])
-  this.width = 20;
-  this.height = 30;
+  MovingObject.call(this, pos, [0, 0], 20, 30)
   this.angle = 180;
   this.game = game;
 }

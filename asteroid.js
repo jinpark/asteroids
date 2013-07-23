@@ -1,17 +1,26 @@
 function Asteroid(pos, vel) {
-  MovingObject.call(this, pos, vel);
-  this.color = "#fff";
   this.radius = (Math.floor(Math.random() * 30) + 20);
+  MovingObject.call(this, pos, vel, this.radius * 2, this.radius * 2);
+  this.color = "#fff";
 }
 
 Asteroid.inherits(MovingObject);
 
 //Check if correct later
-Asteroid.prototype.randomAsteroid = function(){
-  var x = Math.floor(Math.random() * 550) + 50;
-  var y = Math.floor(Math.random() * 350) + 50;
-  var dx = Math.floor(Math.random() * 10) - 5;
-  var dy = Math.floor(Math.random() * 10) - 5;
+Asteroid.randomAsteroid = function(){
+
+  var i = Math.floor(Math.random() * 2);
+  if(i % 2 == 0){
+    var x = Math.floor(Math.random() * 200) + 25;
+    var y = Math.floor(Math.random() * 350) + 50;
+    var dx = Math.floor(Math.random() * 2);
+    var dy = Math.floor(Math.random() * 4) - 2;
+  }else{
+    var x = Math.floor(Math.random() * 100) + 500;
+    var y = Math.floor(Math.random() * 350) + 50;
+    var dx = Math.floor(Math.random() * -2);
+    var dy = Math.floor(Math.random() * 4) - 2;
+  }
 
   return new Asteroid([x, y], [dx, dy]);
 }

@@ -3,17 +3,13 @@ function Game(ctx){
   this.ctx = ctx;
   this.ship = new Ship([GAME_WIDTH / 2, GAME_HEIGHT / 2], this);
   this.bullets = [];
+  this.interval = null;
+}
 
-
-  var numAsteroids = Math.floor(Math.random() * 15) + 5;
+Game.prototype.generateAsteroids = function(){
+  var numAsteroids = Math.floor(Math.random() * 10) + 5;
   for(var i = 0; i < numAsteroids; i++){
-    //Use randomAsteroid method if its correct later
-    var x = Math.floor(Math.random() * 550) + 50;
-    var y = Math.floor(Math.random() * 350) + 50;
-    var dx = Math.floor(Math.random() * 6) - 3;
-    var dy = Math.floor(Math.random() * 6) - 3;
-    var asteroid = new Asteroid([x, y], [dx, dy]);
-    this.asteroids.push(asteroid);
+    this.asteroids.push(Asteroid.randomAsteroid());
   }
 }
 
@@ -25,8 +21,6 @@ Game.prototype.draw = function(){
   this.asteroids.forEach(function(asteroid){
     asteroid.draw(that.ctx);
   });
-
-
 
   this.bullets.forEach(function(bullet){
     bullet.draw(that.ctx);
@@ -46,13 +40,26 @@ Game.prototype.update = function() {
     var asteroid = this.asteroids[i];
     asteroid.update();
     if(asteroid.offScreen()){
-      this.asteroids.splice(i, 1);
-      i--;
+      if(asteroid.pos[0] < 0){
+        asteroid.pos[0] = (asteroid.pos[0] + GAME_WIDTH) %
+                           GAME_WIDTH + asteroid.width;
+      }else{
+        asteroid.pos[0] = (asteroid.pos[0] + GAME_WIDTH) %
+                           GAME_WIDTH - asteroid.width;
+      }
+
+      if(asteroid.pos[1] < 0) {
+        asteroid.pos[1] = (asteroid.pos[1] + GAME_HEIGHT) %
+                           GAME_HEIGHT + asteroid.width;
+      }else{
+        asteroid.pos[1] = (asteroid.pos[1] + GAME_HEIGHT) %
+                           GAME_HEIGHT - asteroid.width;
+      }
     }
     if(this.ship.isHit(asteroid)){
-      console.log("Hit!");
+      window.clearInterval(this.interval);
+      alert("Game Over!");
     }
-
   }
 
   for (var j = 0; j < this.bullets.length; j++) {
@@ -68,11 +75,17 @@ Game.prototype.update = function() {
     }
   }
 
+  if(this.asteroids.length === 0){
+    this.generateAsteroids();
+  }
+
   this.draw();
 }
 
 
 Game.prototype.start = function(){
+  this.generateAsteroids();
+
   var that = this;
 
   key('left, right', function(event){
@@ -87,7 +100,7 @@ Game.prototype.start = function(){
      that.ship.fireBullet(event);
   })
 
-  window.setInterval(function(){
+  this.interval = window.setInterval(function(){
     that.update();
   },31);
 }

@@ -1,11 +1,9 @@
 BULLET_SPEED = 10;
 
 var Bullet = function(ship) {
-  MovingObject.call(this, ship.pos.slice(0), ship.vel.slice(0));
+  MovingObject.call(this, ship.pos.slice(0), ship.vel.slice(0), 3, 3);
   this.ship = ship;
   this.angle = this.ship.angle;
-  this.width = 3;
-  this.height = 3;
 }
 
 Bullet.inherits(MovingObject);
