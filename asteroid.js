@@ -22,7 +22,4 @@ Asteroid.prototype.draw = function(ctx){
   ctx.closePath();
   ctx.fillStyle = this.color;
   ctx.fill();
-
-  // ctx.fillStyle = "green";
-  // ctx.fillRect(50, 50, 50, 50);
 }

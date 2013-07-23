@@ -26,6 +26,12 @@ Game.prototype.draw = function(){
 }
 
 Game.prototype.update = function() {
+  this.ship.update();
+  if(this.ship.offScreen()){
+    this.ship.pos[0] = (this.ship.pos[0] + GAME_WIDTH) % GAME_WIDTH;
+    this.ship.pos[1] = (this.ship.pos[1] + GAME_HEIGHT) % GAME_HEIGHT;
+  }
+
   for(var i = 0; i < this.asteroids.length; i++){
     var asteroid = this.asteroids[i];
     asteroid.update();
@@ -40,8 +46,18 @@ Game.prototype.update = function() {
   this.draw();
 }
 
+
 Game.prototype.start = function(){
   var that = this;
+
+  key('left, right', function(event){
+    that.ship.turn(event);
+  });
+
+  key('up, down', function(event){
+    that.ship.power(event);
+  })
+
   window.setInterval(function(){
     that.update();
   },31);
