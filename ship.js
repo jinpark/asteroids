@@ -1,6 +1,8 @@
+MAX_COMBINED_SPEED = 5;
+
 function Ship(pos, game){
   MovingObject.call(this, pos, [0, 0], 20, 30)
-  this.angle = 180;
+  this.angle = 90;
   this.game = game;
 }
 
@@ -52,23 +54,26 @@ Ship.prototype.isHit = function(asteroid){
 
 Ship.prototype.turn = function(event) {
   if(event.keyIdentifier == "Left"){
-    this.angle -= 4;
+    this.angle -= 5;
   }else if(event.keyIdentifier == "Right"){
-    this.angle += 4;
+    this.angle += 5;
   }
 }
 
 Ship.prototype.power = function(event){
+  var tip = [this.pos[0], this.pos[1] - this.height/2];
+  tip = this._rotatePoint(tip[0], tip[1],
+                          this.pos[0], this.pos[1], this.angle);
+
+  var dx = (tip[0] - this.pos[0]) / 20;
+  var dy = (tip[1] - this.pos[1]) / 30;
+
   if(event.keyIdentifier == "Up"){
-    var tip = [this.pos[0], this.pos[1] - this.height/2];
-    tip = this._rotatePoint(tip[0], tip[1],
-                            this.pos[0], this.pos[1], this.angle);
-
-    var dx = (tip[0] - this.pos[0]) / 20;
-    var dy = (tip[1] - this.pos[1]) / 30;
-
-    this.vel[0] += dx;
-    this.vel[1] += dy;
+      this.vel[0] += dx;
+      this.vel[1] += dy;
+  }else if(event.keyIdentifier == "Down"){
+      this.vel[0] *= .9;
+      this.vel[1] *= .9;
   }
 }
 
