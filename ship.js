@@ -54,9 +54,9 @@ Ship.prototype.isHit = function(asteroid){
 
 Ship.prototype.turn = function(event) {
   if(event.keyIdentifier == "Left"){
-    this.angle -= 5;
+    this.angle -= 7;
   }else if(event.keyIdentifier == "Right"){
-    this.angle += 5;
+    this.angle += 7;
   }
 }
 

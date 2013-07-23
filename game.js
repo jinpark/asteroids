@@ -4,12 +4,17 @@ function Game(ctx){
   this.ship = new Ship([GAME_WIDTH / 2, GAME_HEIGHT / 2], this);
   this.bullets = [];
   this.interval = null;
+  this.score = 0;
 }
 
 Game.prototype.generateAsteroids = function(){
   var numAsteroids = Math.floor(Math.random() * 10) + 5;
-  for(var i = 0; i < numAsteroids; i++){
-    this.asteroids.push(Asteroid.randomAsteroid());
+  for(var i = 0; i < numAsteroids; i++) {
+    var asteroid = Asteroid.randomAsteroid();
+    while(this.ship.isHit(asteroid)){
+      asteroid = Asteroid.randomAsteroid();
+    }
+    this.asteroids.push(asteroid);
   }
 }
 
@@ -27,6 +32,10 @@ Game.prototype.draw = function(){
   });
 
   this.ship.draw(ctx);
+
+  this.ctx.font = "20px Arial";
+  this.ctx.fillStyle = "green";
+  this.ctx.fillText("Score: " + this.score, 10, 25);
 }
 
 Game.prototype.update = function() {
@@ -71,6 +80,7 @@ Game.prototype.update = function() {
       if (bullet.checkCollision(asteroid)) {
         this.bullets.splice(j, 1);
         this.asteroids.splice(k, 1);
+        this.score++;
       }
     }
   }

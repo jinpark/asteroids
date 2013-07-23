@@ -21,7 +21,6 @@ Asteroid.randomAsteroid = function(){
     var dx = Math.floor(Math.random() * -2);
     var dy = Math.floor(Math.random() * 4) - 2;
   }
-
   return new Asteroid([x, y], [dx, dy]);
 }
 
