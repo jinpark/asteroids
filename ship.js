@@ -1,8 +1,9 @@
-function Ship(pos){
+function Ship(pos, game){
   MovingObject.call(this, pos, [0, 0])
   this.width = 20;
   this.height = 30;
   this.angle = 180;
+  this.game = game;
 }
 
 Ship.inherits(MovingObject);
@@ -72,3 +73,11 @@ Ship.prototype.power = function(event){
     this.vel[1] += dy;
   }
 }
+
+Ship.prototype.fireBullet = function(){
+  this.game.bullets.push(new Bullet(this));
+}
+
+
+
+
